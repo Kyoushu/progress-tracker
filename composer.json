@@ -1,0 +1,29 @@
+{
+    "name": "kyoushu/progress-tracker",
+    "description": "A small library for calculating progress while iterating over sets and sub-sets of tasks",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Willans",
+            "email": "kyoushu@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "~7.1",
+        "phpunit/phpunit": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kyoushu\\ProgressTracker\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Kyoushu\\ProgressTracker\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.1"
+    }
+}
