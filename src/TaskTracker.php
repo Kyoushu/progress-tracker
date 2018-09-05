@@ -93,7 +93,7 @@ class TaskTracker extends AbstractTracker
      * @return TaskTracker
      * @throws TaskTrackerException
      */
-    public function findSubTaskByName(string $name): TaskTracker
+    public function findSubTask(string $name): TaskTracker
     {
         $this->assertSubTaskExists($name);
         return $this->subTasks[$name];

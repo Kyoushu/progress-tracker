@@ -56,9 +56,16 @@ abstract class AbstractTracker implements TrackerInterface
      */
     public function getSecondsElapsed(\DateTimeInterface $now = null): ?int
     {
-        if($now === null) $now = new \DateTimeImmutable('now');
         $started = $this->getDateTimeStarted();
+        $ended = $this->getDateTimeEnded();
+
         if($started === null) return null;
+
+        if($ended !== null){
+            return (int)$ended->format('U') - (int)$started->format('U');
+        }
+
+        if($now === null) $now = new \DateTimeImmutable('now');
         return (int)$now->format('U') - (int)$started->format('U');
     }
 
