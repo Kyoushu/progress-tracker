@@ -9,41 +9,29 @@ require(__DIR__ . '/../vendor/autoload.php');
 
 $items = [
     [
-        'name' => '1',
+        'name' => 'Downloading',
         'sub_items' => [
-            ['name' => '1.1'],
-            ['name' => '1.2'],
-            ['name' => '1.3'],
-            ['name' => '1.4'],
-            ['name' => '1.5'],
-            ['name' => '1.6'],
-            ['name' => '1.7'],
-            ['name' => '1.8'],
+            ['name' => 'core'],
+            ['name' => 'packages'],
+            ['name' => 'assets'],
+            ['name' => 'modules'],
+            ['name' => 'source'],
+            ['name' => 'libraries'],
+            ['name' => 'dependencies'],
+            ['name' => 'updates']
         ]
     ],
     [
-        'name' => '2',
+        'name' => 'Installing',
         'sub_items' => [
-            ['name' => '2.1'],
-            ['name' => '2.2'],
-            ['name' => '2.3'],
-            ['name' => '2.4'],
-            ['name' => '2.5'],
-            ['name' => '2.6'],
-        ]
-    ],
-    [
-        'name' => '3',
-        'sub_items' => [
-            ['name' => '3.1'],
-            ['name' => '3.2'],
-            ['name' => '3.3'],
-            ['name' => '3.4'],
-            ['name' => '3.5'],
-            ['name' => '3.6'],
-            ['name' => '3.7'],
-            ['name' => '3.8'],
-            ['name' => '3.9'],
+            ['name' => 'core'],
+            ['name' => 'packages'],
+            ['name' => 'assets'],
+            ['name' => 'modules'],
+            ['name' => 'source'],
+            ['name' => 'libraries'],
+            ['name' => 'dependencies'],
+            ['name' => 'updates']
         ]
     ]
 ];
@@ -68,23 +56,35 @@ $formatter = new ProgressBarFormatter(30, 2);
 
 $lastLine = null;
 
+function printProgress($prefix)
+{
+    global $lastLine, $formatter, $progress;
+    if($lastLine !== null) echo str_repeat(chr(8), mb_strlen($lastLine)); // Backspace over last output
+    $eta = $progress->getDateTimeEta();
+    $lastLine = sprintf("%s - %s - ETA: %s", str_pad($prefix, 25, ' ', STR_PAD_LEFT), $formatter->format($progress), ($eta ? $eta->format('H:i:s') : '-'));
+    echo $lastLine;
+}
+
 foreach($items as $item){
 
     $itemTask = $progress->findSubTask($item['name']);
 
+    printProgress($item['name']);
+
     foreach($item['sub_items'] as $subItem){
 
+        // Simulate an activity taking time, mark sub-item as completed, render progress
+
+        printProgress($item['name'] . ' ' . $subItem['name']);
+
+        usleep(1000 * rand(500,800));
+
         $subItemTask = $itemTask->findSubTask($subItem['name']);
-
-        // Simulate something taking 100-500ms, then mark the sub-task as done
-
-        usleep(1000 * rand(100,500));
         $subItemTask->setCompleted(true);
 
-        // Print the total percentage completed, and ETA
-        if($lastLine !== null) echo str_repeat(chr(8), mb_strlen($lastLine)); // Backspace over last output
-        $lastLine = sprintf("%s - %s - ETA: %s", str_pad($subItem['name'], 5, ' ', STR_PAD_LEFT), $formatter->format($progress), $progress->getDateTimeEta()->format('H:i:s'));
-        echo $lastLine;
+        printProgress($item['name'] . ' ' . $subItem['name']);
+
+        usleep(1000 * rand(500,800));
 
     }
 }

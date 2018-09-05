@@ -27,6 +27,7 @@ abstract class AbstractTracker implements TrackerInterface
         if($ended !== null || $started === null) return null;
 
         $secondsTotal = $this->getSecondsTotal($now);
+        if($secondsTotal === null || $secondsTotal === 0) return null;
         $interval = new \DateInterval(sprintf('PT%sS', $secondsTotal));
         $eta = new \DateTime($started->format('c'));
         $eta->add($interval);
@@ -42,10 +43,11 @@ abstract class AbstractTracker implements TrackerInterface
     public function getSecondsTotal(\DateTimeInterface $now = null): ?int
     {
         $progress = $this->getProgressPercentage();
-        if($progress === 0) return null;
+        if($progress === 0.0 || $progress === 0) return null;
 
         $secondsElapsed = $this->getSecondsElapsed($now);
         if($secondsElapsed === null) return null;
+
         return round(($secondsElapsed / $progress) * 100);
     }
 
